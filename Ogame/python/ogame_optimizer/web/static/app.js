@@ -127,13 +127,16 @@
     metrics.innerHTML = "";
     var wp = data.win_probability;
     var ci = data.confidence_interval_95 || [0, 0];
-    var lostPct = data.fleet_lost_pct || 0;
-    var lostClass = lostPct < 5 ? "win-green" : (lostPct < 20 ? "win-yellow" : "win-red");
+    var rawLoss = data.raw_loss_mean || data.expected_loss_mean || 0;
+    var effLoss = data.expected_loss_mean || 0;
+    var rawPct = data.fleet_value > 0 ? (rawLoss / data.fleet_value) * 100 : 0;
+    var effPct = data.fleet_lost_pct || (data.fleet_value > 0 ? (effLoss / data.fleet_value) * 100 : 0);
+    var lostClass = rawPct < 5 ? "win-green" : (rawPct < 50 ? "win-yellow" : "win-red");
     var cards = [
       ["Win Probability", fmtPct(wp), winColorClass(wp)],
-      ["Fleet Lost", fmtPct(lostPct/100), lostClass],
-      ["Expected Loss", fmtNum(data.expected_loss_mean)],
+      ["Ships Lost", fmtPct(rawPct/100), lostClass],
       ["Fleet Value", fmtNum(data.fleet_value)],
+      ["Effective Loss (after debris)", fmtNum(effLoss) + " (" + effPct.toFixed(1) + "%)"],
       ["Debris Metal", fmtNum(data.debris_metal)],
       ["Debris Crystal", fmtNum(data.debris_crystal)],
     ];
