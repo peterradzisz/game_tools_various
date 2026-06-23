@@ -1,0 +1,102 @@
+// Log of Currently Installed WeiDU Mods
+// The top of the file is the 'oldest' mod
+// ~TP2_File~ #language_number #component_number // [Subcomponent Name -> ] Component Name [ : Version]
+~SPELL_REV/SPELL_REV.TP2~ #0 #0 // Spell Revisions: v4.20
+~IWDIFICATION\IWDIFICATION.TP2~ #0 #10 // Icewind Dale Casting Graphics (Andyr): v11
+~IWDIFICATION\IWDIFICATION.TP2~ #0 #20 // Commoners Use Drab Colors: v11
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1 // Artisan's Kitpack: Enable All Classes for All Races
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #2 // Artisan's Kitpack: Enable Multi-Classes for -> All Races
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #20000 // Artisan's Kitpack: Eldritch Knight (Fighter / Mage Kit)
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #20001 // Artisan's Kitpack: Arcane Trickster (Mage / Thief Kit)
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #8001 // Artisan's Kitpack: Pale Master Sorcerer Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #8101 // Artisan's Kitpack: Pale Master Spells -> 'Unholy' Necromancy Spells Only (Cause Wounds, Disease, Poison, etc.)
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #8002 // Artisan's Kitpack: 3e-accurate Dragon Disciple -> Original Stat Bonuses
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #10001 // Artisan's Kitpack: Monk Revisions
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #10002 // Artisan's Kitpack: Brawler Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1100 // Artisan's Kitpack: Fighter Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1003 // Artisan's Kitpack: Berserker Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1006 // Artisan's Kitpack: Wizard Slayer Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1004 // Artisan's Kitpack: Kensai Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1005 // Artisan's Kitpack: Barbarian Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1007 // Artisan's Kitpack: Dwarven Defender Overhaul + Vanguard Fighter Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1000 // Artisan's Kitpack: Arcane Archer Fighter Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1001 // Artisan's Kitpack: Arcane Archer (Fighter/Mage)
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1008 // Artisan's Kitpack: Siegemaster Fighter Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1009 // Artisan's Kitpack: Dreadnought Fighter Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #1010 // Artisan's Kitpack: Samurai Fighter Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #2010 // Artisan's Kitpack: Archer Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #2011 // Artisan's Kitpack: Stalker Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #2012 // Artisan's Kitpack: Beast Master Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #2003 // Artisan's Kitpack: Arcane Archer (Ranger variant)
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3000 // Artisan's Kitpack: Paladin Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3010 // Artisan's Kitpack: Cavalier Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3003 // Artisan's Kitpack: Inquisitor Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3011 // Artisan's Kitpack: Undead Hunter Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3004 // Artisan's Kitpack: Blackguard Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3001 // Artisan's Kitpack: Divine Champion Paladin Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3002 // Artisan's Kitpack: Mystic Fire Paladin Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #3005 // Artisan's Kitpack: Martyr Paladin Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5300 // Artisan's Kitpack: Totemic Druid Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5100 // Artisan's Kitpack: Shapeshifter Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5110 // Artisan's Kitpack: Shapeshifter Overhaul – Custom Werewolf Sprite -> Shapeshifter Form Only
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5200 // Artisan's Kitpack: Avenger Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5001 // Artisan's Kitpack: Elementalist Druid Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #5002 // Artisan's Kitpack: Hivemaster Druid Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7000 // Artisan's Kitpack: Thief Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7004 // Artisan's Kitpack: Assassin Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7006 // Artisan's Kitpack: Swashbuckler Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7008 // Artisan's Kitpack: Shadowdancer Overhaul
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7001 // Artisan's Kitpack: Rogue Archer Thief Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7002 // Artisan's Kitpack: Magekiller Thief Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7003 // Artisan's Kitpack: Trickster Thief Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #7005 // Artisan's Kitpack: Invisible Blade Thief Kit
+~ARTISANSKITPACK\ARTISANSKITPACK.TP2~ #0 #9001 // Artisan's Kitpack: Warhorn Shaman Kit
+~SHADOWADEPT\SHADOWADEPT.TP2~ #0 #0 // Shadow Magic: Main Component
+~SHADOWADEPT\SHADOWADEPT.TP2~ #0 #8 // Shadow Magic: Enhanced Shade Lord (BG2:EE) -> Add Bonus Special Ability Only
+~UB/UB.TP2~ #0 #0 // The Kidnapping of Boo by Cliffette: v28
+~UB/UB.TP2~ #0 #1 // The Suna Seni/Valygar Relationship: v28
+~UB/UB.TP2~ #0 #2 // Kalah and What He Was Promised: v28
+~UB/UB.TP2~ #0 #3 // "Cat and Mouse" (Bodhi hunts you in Spellhold) by Ghreyfain: v28
+~UB/UB.TP2~ #0 #4 // Gorje Hilldark and the Extended Illithium Quest: v28
+~UB/UB.TP2~ #0 #5 // The Pai'Na/Spider's Bane Quest: v28
+~UB/UB.TP2~ #0 #6 // Restored Crooked Crane Inn: v28
+~UB/UB.TP2~ #0 #7 // Restored Encounters: v28
+~UB/UB.TP2~ #0 #8 // Artemis Entreri in Bodhi's Lair: v28
+~UB/UB.TP2~ #0 #9 // Corrected "Xzar's Creations": v28
+~UB/UB.TP2~ #0 #10 // Restored Hell Minions, by SimDing0: v28
+~UB/UB.TP2~ #0 #12 // Item Restorations: v28
+~UB/UB.TP2~ #0 #13 // Yoshimo's Original Portrait: v28
+~UB/UB.TP2~ #0 #14 // Anomen's Original Portrait: v28
+~UB/UB.TP2~ #0 #15 // NPC Portrait Restorations: v28
+~UB/UB.TP2~ #0 #17 // Corrected Character Names and Biographies: v28
+~UB/UB.TP2~ #0 #18 // Restored Minor Dialogs: v28
+~UB/UB.TP2~ #0 #19 // Restored Bhaalspawn Powers, by David Gaider: v28
+~UB/UB.TP2~ #0 #20 // Extended ToB Item Descriptions: v28
+~UB/UB.TP2~ #0 #21 // Throne of Bhaal Minor Restorations: v28
+~UB/UB.TP2~ #0 #22 // Justifier Kit: v28
+~UB/UB.TP2~ #0 #23 // Feralan Kit: v28
+~UB/UB.TP2~ #0 #24 // Sarevok's Remorse: v28
+~UB/UB.TP2~ #0 #25 // The Murder of Acton Balthis, by Kulyok: v28
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1001 // Bardic Wonders: Blade Overhaul
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1002 // Bardic Wonders: Jester Overhaul
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1003 // Bardic Wonders: Skald Overhaul
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1004 // Bardic Wonders: Abettor of Mask Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1005 // Bardic Wonders: Dancer Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1006 // Bardic Wonders: Darkbloom Bard Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1007 // Bardic Wonders: Storm Drummer Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1008 // Bardic Wonders: Troubadour Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1009 // Bardic Wonders: Deathsinger Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1010 // Bardic Wonders: Strategist Kit
+~BARDICWONDERS\SETUP-BARDICWONDERS.TP2~ #0 #1011 // Bardic Wonders: Kapellmeister Kit
+~IWDIFICATION\IWDIFICATION.TP2~ #0 #30 // IWD Arcane Spell Pack: v11
+~IWDIFICATION\IWDIFICATION.TP2~ #0 #40 // IWD Divine Spell Pack: v11
+~ITEM_REV\ITEM_REV.TP2~ #0 #0 // Item Revisions by Demivrgvs: V3 Beta 1.16
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #10 // Remove Helmet Animations: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #1120 // Stores Sell Higher Stacks of Items: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #2140 // Expanded Dual-Class Options: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #2250 // Un-Nerfed Sorcerer Spell Progression Table: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #2351 // Alter Multi-Class Restrictions -> Allow non-humans access to all multi-class combinations: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #3080 // Increase Ammo Stack Size -> Unlimited ammo stacking: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #3090 // Increase Jewelry, Gem, and Miscellaneous Item Stacks -> Unlimited jewelry, gem, and miscellaneous item stacking: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #3100 // Increase Potion Stacking -> Unlimited potion stacking: v18
+~CDTWEAKS/CDTWEAKS.TP2~ #0 #3110 // Increase Scroll Stacking -> Unlimited scroll stacking: v18

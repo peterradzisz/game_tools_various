@@ -1,0 +1,10 @@
+# Large mod files (download manually from links in README)
+# Warlock-master.zip (150MB - exceeds GitHub 100MB limit)
+
+# Backup files
+*.bak
+*.backup
+
+# Temp files
+*.tmp
+*~
