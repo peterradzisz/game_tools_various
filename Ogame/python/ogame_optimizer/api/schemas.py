@@ -98,6 +98,10 @@ class OptimizeResponse(BaseModel):
     net_profit_pct: float = 0.0
     recyclers_needed: int = 0
     recycler_capacity: int = 20000
+    recyclers_cost_metal: int = 0
+    recyclers_cost_crystal: int = 0
+    recyclers_cost_deuterium: int = 0
+    recyclers_cost_total: int = 0
     fleet_analysis: Dict[str, Dict] = Field(default_factory=dict)
 
 

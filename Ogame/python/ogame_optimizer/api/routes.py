@@ -146,6 +146,10 @@ def run_optimize(req: OptimizeRequest) -> OptimizeResponse:
             net_profit_pct=result.net_profit_pct,
             recyclers_needed=result.recyclers_needed,
             recycler_capacity=result.recycler_capacity,
+            recyclers_cost_metal=result.recyclers_cost_metal,
+            recyclers_cost_crystal=result.recyclers_cost_crystal,
+            recyclers_cost_deuterium=result.recyclers_cost_deuterium,
+            recyclers_cost_total=result.recyclers_cost_total,
             fleet_analysis=result.fleet_analysis,
         )
     except ValueError as e:

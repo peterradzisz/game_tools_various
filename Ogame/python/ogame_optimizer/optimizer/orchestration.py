@@ -43,6 +43,10 @@ class OptimizationResult:
     net_profit_pct: float = 0.0
     recyclers_needed: int = 0
     recycler_capacity: int = 20000
+    recyclers_cost_metal: int = 0
+    recyclers_cost_crystal: int = 0
+    recyclers_cost_deuterium: int = 0
+    recyclers_cost_total: int = 0
     fleet_analysis: Dict[str, Dict[str, float]] = field(default_factory=dict)
 
 
@@ -465,6 +469,12 @@ def optimize(
     recycler_cap = int(20000 * (1 + hyperspace_tech * 0.05) * (1.25 if collector_class else 1.0))
     debris_total_val = int(final.get("debris_total", 0))
     recyclers = (debris_total_val + recycler_cap - 1) // recycler_cap if recycler_cap > 0 else 0
+    # Recycler build cost (M/C/D) for the needed count
+    _rec_cost = SHIPS_COST.get("recycler", (10000, 6000, 2000))
+    recyclers_cost_metal = recyclers * _rec_cost[0]
+    recyclers_cost_crystal = recyclers * _rec_cost[1]
+    recyclers_cost_deuterium = recyclers * _rec_cost[2]
+    recyclers_cost_total = recyclers_cost_metal + recyclers_cost_crystal + recyclers_cost_deuterium
 
     # Sensitivity analysis: which ships are critical vs dead weight?
     _log.info("--- Sensitivity analysis ---")
@@ -506,6 +516,10 @@ def optimize(
         net_profit_pct=((final.get("debris_total", 0) - mean_loss) / _final_fv * 100) if _final_fv > 0 else 0,
         recyclers_needed=recyclers,
         recycler_capacity=recycler_cap,
+        recyclers_cost_metal=recyclers_cost_metal,
+        recyclers_cost_crystal=recyclers_cost_crystal,
+        recyclers_cost_deuterium=recyclers_cost_deuterium,
+        recyclers_cost_total=recyclers_cost_total,
         debris_crystal=int(final.get("debris_crystal", 0)),
         debris_deuterium=int(final.get("debris_deuterium", 0)),
         debris_total=int(final.get("debris_total", 0)),

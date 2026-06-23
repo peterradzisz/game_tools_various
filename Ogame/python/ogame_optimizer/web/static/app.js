@@ -144,7 +144,14 @@
     var netClass = netP > 0 ? "win-green" : "win-red";
     var netSign = netP >= 0 ? "+" : "";
     cards.push(["Net Profit (if recycled)", netSign + fmtNum(netP) + " (" + netSign + netPct.toFixed(1) + "%)", netClass]);
-    if (data.recyclers_needed > 0) cards.push(["Recyclers Needed", fmtNum(data.recyclers_needed) + " (cap " + fmtNum(data.recycler_capacity) + " each)"]);
+    if (data.recyclers_needed > 0) {
+      var rcT = data.recyclers_cost_total || 0;
+      var recLabel = fmtNum(data.recyclers_needed) + " (cap " + fmtNum(data.recycler_capacity) + " each)";
+      if (rcT > 0) {
+        recLabel += "<br><span style='font-size:0.8em;color:#8b95a7'>Build: " + fmtNum(data.recyclers_cost_metal) + " M / " + fmtNum(data.recyclers_cost_crystal) + " C / " + fmtNum(data.recyclers_cost_deuterium) + " D</span>";
+      }
+      cards.push(["Recyclers Needed", recLabel]);
+    }
     cards.push(["Loss Stddev", fmtNum(data.expected_loss_stddev)]);
     cards.push(["95% CI", fmtNum(ci[0]) + " - " + fmtNum(ci[1])]);
     cards.push(["GA Improvement", fmtNum(data.ga_improvement_pct) + "%"]);
