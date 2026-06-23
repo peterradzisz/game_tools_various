@@ -77,21 +77,40 @@ def _sensitivity_analysis(
     deuterium_in_debris: bool,
     base_seed: int = 42,
     n_sims: int = 200,
-) -> Dict[str, Dict[str, float]]:
+) -> Dict[str, Dict]:
     """For each ship in fleet, measure impact of removing it (redistribute to best remaining).
 
-    Returns {ship: {"impact_pct": float, "tag": str}} where:
-    - critical: removing this ship increases losses >20%
+    Returns {ship: {"impact_pct": float, "tag": str, "redistributed_to": str, "loss_breakdown": dict}}.
+
+    Tags:
+    - critical: removing increases losses >20%
     - important: 5-20% increase
     - negligible: -5% to +5% change
-    - dead_weight: fleet actually improves without it (<-5%)
+    - dead_weight: non-fodder ship where fleet improves without it (<-5%)
+    - fodder: cheap screening ship with negative impact — serves as cannon fodder, not truly dead weight
     """
     present_ships = [s for s, c in fleet.items() if c > 0]
-    if len(present_ships) <= 1 or base_loss <= 0:
+    if len(present_ships) <= 1:
         return {}
+
+    # Ships that serve as cannon fodder — negative impact is expected, not a flaw
+    FODDER_SHIPS = {"light_fighter", "heavy_fighter", "small_cargo", "large_cargo", "espionage_probe"}
 
     # Ship value contributions for redistribution target selection
     ship_values = {s: sum(SHIPS_COST.get(s, (0, 0, 0))) * fleet[s] for s in present_ships}
+
+    # Get baseline per-type losses via single detailed simulation
+    base_per_type = {}
+    try:
+        from ogame_optimizer.core.fast_combat import simulate_combat_fast
+        base_detail = simulate_combat_fast(
+            fleet, enemy_fleet, enemy_defenses, attacker_tech, enemy_tech,
+            seed=base_seed + 60000,
+        )
+        base_survivors = base_detail.get("attacker_survivors", {})
+        base_per_type = {s: fleet.get(s, 0) - base_survivors.get(s, 0) for s in fleet}
+    except Exception:
+        pass
 
     analysis = {}
     for idx, ship in enumerate(present_ships):
@@ -105,8 +124,10 @@ def _sensitivity_analysis(
         variant = {k: v for k, v in fleet.items() if k != ship}
         freed_budget = sum(SHIPS_COST.get(ship, (0, 0, 0))) * fleet[ship]
         target_cost = sum(SHIPS_COST.get(target, (0, 0, 0)))
+        extra_count = 0
         if target_cost > 0:
-            variant[target] = variant.get(target, 0) + freed_budget // target_cost
+            extra_count = freed_budget // target_cost
+            variant[target] = variant.get(target, 0) + extra_count
 
         result = simulate_batch(
             attacker=variant,
@@ -120,22 +141,55 @@ def _sensitivity_analysis(
             deuterium_in_debris=deuterium_in_debris,
         )
         variant_loss = float(result.get("mean_attacker_loss", base_loss))
-        impact_pct = ((variant_loss - base_loss) / base_loss) * 100
+        if base_loss > 0:
+            impact_pct = ((variant_loss - base_loss) / base_loss) * 100
+        elif variant_loss > 0:
+            impact_pct = 999.0  # Fleet had 0 loss, removing this ship causes loss = critical
+        else:
+            impact_pct = 0.0  # Both zero — ship doesn't matter
 
+        # Compute per-type loss breakdown
+        loss_breakdown = {}
+        if base_per_type:
+            try:
+                variant_detail = simulate_combat_fast(
+                    variant, enemy_fleet, enemy_defenses, attacker_tech, enemy_tech,
+                    seed=base_seed + 60000 + idx,
+                )
+                variant_survivors = variant_detail.get("attacker_survivors", {})
+                variant_per_type = {s: variant.get(s, 0) - variant_survivors.get(s, 0) for s in variant}
+                all_types = set(list(base_per_type.keys()) + list(variant_per_type.keys()))
+                for s in all_types:
+                    delta = variant_per_type.get(s, 0) - base_per_type.get(s, 0)
+                    if abs(delta) >= 1:
+                        loss_breakdown[s] = int(delta)
+            except Exception:
+                pass
+
+        # Tagging: fodder ships get "fodder" tag, not "dead_weight"
         if impact_pct > 20:
             tag = "critical"
         elif impact_pct > 5:
             tag = "important"
         elif impact_pct < -5:
-            tag = "dead_weight"
+            if ship in FODDER_SHIPS:
+                tag = "fodder"
+            else:
+                tag = "dead_weight"
         else:
             tag = "negligible"
 
-        analysis[ship] = {"impact_pct": round(impact_pct, 1), "tag": tag}
-        _log.info("  Sensitivity %s: %+.1f%% -> %s", ship, impact_pct, tag)
+        analysis[ship] = {
+            "impact_pct": round(impact_pct, 1),
+            "tag": tag,
+            "redistributed_to": target,
+            "extra_count": extra_count,
+            "loss_breakdown": loss_breakdown,
+        }
+        _log.info("  Sensitivity %s: %+.1f%% -> %s (redist->%s +%d)",
+                  ship, impact_pct, tag, target, extra_count)
 
     return analysis
-
 
 def optimize(
     enemy_fleet: Dict[str, int],

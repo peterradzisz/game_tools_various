@@ -173,11 +173,23 @@
         if (fr.tag === "critical") rowClass = "fleet-row-critical";
         else if (fr.tag === "important") rowClass = "fleet-row-important";
         else if (fr.tag === "dead_weight") rowClass = "fleet-row-deadweight";
+        else if (fr.tag === "fodder") rowClass = "fleet-row-fodder";
       }
       var row = document.createElement("tr");
       if (rowClass) row.className = rowClass;
+      var breakdownText = "";
+      if (hasAnalysis && fr.loss_breakdown) {
+        var parts = [];
+        for (var bt in fr.loss_breakdown) {
+          var d = fr.loss_breakdown[bt];
+          if (Math.abs(d) >= 1) {
+            parts.push((d > 0 ? "+" : "") + fmtNum(d) + " " + bt.replace(/_/g, " "));
+          }
+        }
+        if (parts.length > 0) breakdownText = " title=\"Without this ship: " + parts.join(", ") + "\"";
+      }
       var impactCell = hasAnalysis
-        ? "<td class=\"value-col\">" + (fr.impact_pct != null ? fr.impact_pct.toFixed(1) + "%" : "-") + "</td>"
+        ? "<td class=\"value-col\"" + breakdownText + ">" + (fr.impact_pct != null ? fr.impact_pct.toFixed(1) + "%" : "-") + "</td>"
         : "<td class=\"value-col\">-</td>";
       row.innerHTML = "<td>" + fr.key.replace(/_/g, " ") + "</td><td>" + fmtNum(fr.count) + "</td>" + impactCell;
       tbody.appendChild(row);

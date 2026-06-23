@@ -86,6 +86,12 @@ textarea:focus { outline: 2px solid #8aa9ff; outline-offset: 1px; }
   border-left: 3px solid #f87171;
   opacity: 0.75;
 }
+.fleet-row-fodder {
+  background: rgba(96, 165, 250, 0.06) !important;
+}
+.fleet-row-fodder td:first-child {
+  border-left: 3px solid #60a5fa;
+}
 .fleet-legend {
   display: flex;
   gap: 1.5rem;
@@ -106,4 +112,5 @@ textarea:focus { outline: 2px solid #8aa9ff; outline-offset: 1px; }
 }
 .fleet-legend-dot.critical { background: #4ade80; }
 .fleet-legend-dot.deadweight { background: #f87171; }
+.fleet-legend-dot.fodder { background: #60a5fa; }
 .value-col { color: #6c7891; font-size: 0.85rem; text-align: right; }
