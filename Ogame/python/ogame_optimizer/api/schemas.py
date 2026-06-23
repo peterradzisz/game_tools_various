@@ -56,7 +56,7 @@ class OptimizeRequest(BaseModel):
     debris_pct: float = 0.30
     deuterium_in_debris: bool = False
     optimization_target: str = "minimize_loss"
-    hyperspace_tech: int = 0
+    hyperspace_tech: int = 11
     collector_class: bool = False
 
     @field_validator("budget_multiplier")
