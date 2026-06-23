@@ -103,6 +103,7 @@ class OptimizeResponse(BaseModel):
     recyclers_cost_deuterium: int = 0
     recyclers_cost_total: int = 0
     fleet_analysis: Dict[str, Dict] = Field(default_factory=dict)
+    raw_loss_mean: float = 0.0
 
 
 class CombatRequest(BaseModel):

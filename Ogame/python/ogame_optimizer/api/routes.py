@@ -126,6 +126,7 @@ def run_optimize(req: OptimizeRequest) -> OptimizeResponse:
                   result.recommended_fleet, result.win_probability, result.expected_loss_mean, result.total_time)
         return OptimizeResponse(
             recommended_fleet=result.recommended_fleet,
+            raw_loss_mean=result.raw_loss_mean,
             expected_loss_mean=result.expected_loss_mean,
             expected_loss_stddev=result.expected_loss_stddev,
             win_probability=result.win_probability,

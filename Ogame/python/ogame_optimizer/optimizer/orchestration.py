@@ -48,6 +48,7 @@ class OptimizationResult:
     recyclers_cost_deuterium: int = 0
     recyclers_cost_total: int = 0
     fleet_analysis: Dict[str, Dict[str, float]] = field(default_factory=dict)
+    raw_loss_mean: float = 0.0
 
 
 def _validate_inputs(
@@ -507,7 +508,7 @@ def optimize(
               float(final.get("win_probability", 0)))
 
     mean_loss_raw = float(final.get("mean_attacker_loss", 0))
-    mean_loss = mean_loss_raw * _loss_scale  # effective loss after debris recovery
+    mean_loss = mean_loss_raw * _loss_scale  # effective loss after debris recovery  # effective loss after debris recovery
     stddev_loss = float(final.get("stddev_attacker_loss", 0))
     win_prob = float(final.get("win_probability", 0.0))
     stderr = stddev_loss / max(1, final_sims ** 0.5)
@@ -583,6 +584,7 @@ def optimize(
         debris_crystal=int(final.get("debris_crystal", 0)),
         debris_deuterium=int(final.get("debris_deuterium", 0)),
         debris_total=int(final.get("debris_total", 0)),
+        raw_loss_mean=mean_loss_raw,
         expected_loss_mean=mean_loss,
         expected_loss_stddev=stddev_loss,
         win_probability=win_prob,
