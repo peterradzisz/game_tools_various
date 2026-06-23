@@ -195,6 +195,66 @@ def _sensitivity_analysis(
 
     return analysis
 
+def _rust_verify(
+    fleet: Dict[str, int],
+    enemy_fleet: Dict[str, int],
+    enemy_defenses: Dict[str, int],
+    attacker_tech: tuple,
+    enemy_tech: tuple,
+    analytical_loss: float,
+    n_sims: int = 3,
+    base_seed: int = 42,
+    max_ships: int = 1000,
+) -> None:
+    """Run real per-unit Rust simulation and log comparison vs analytical.
+
+    Only runs if total fleet size is small enough for per-unit sim to be fast.
+    Logs the comparison but does NOT override analytical results (logging-only for now).
+    """
+    total_ships = sum(fleet.values()) + sum(enemy_fleet.values()) + sum(enemy_defenses.values())
+    if total_ships > max_ships:
+        _log.info("  Rust verify: SKIPPED (fleet %d ships > limit %d)", total_ships, max_ships)
+        return
+
+    try:
+        from ogame_optimizer.core.combat import (
+            _normalize_ship_keys, _strip_unknown_for_rust,
+            _normalize_defense_keys, _to_tech_tuple,
+        )
+        from ogame_optimizer import _ogame_combat
+
+        result = _ogame_combat.simulate_batch_py(
+            _normalize_ship_keys(_strip_unknown_for_rust(fleet)),
+            _normalize_ship_keys(_strip_unknown_for_rust(enemy_fleet)),
+            _normalize_defense_keys(enemy_defenses),
+            _to_tech_tuple(attacker_tech),
+            _to_tech_tuple(enemy_tech),
+            n_sims,
+            base_seed,
+        )
+        rust_loss = float(result.get("mean_attacker_loss", 0))
+        rust_win = float(result.get("win_probability", 0))
+        rust_stddev = float(result.get("stddev_attacker_loss", 0))
+
+        _log.info("  Rust verify (%d sims, %d ships): loss=%.0f win=%.0f%% stddev=%.0f",
+                  n_sims, total_ships, rust_loss, rust_win * 100, rust_stddev)
+        _log.info("  Analytical:      loss=%.0f", analytical_loss)
+
+        if analytical_loss > 0:
+            diff_pct = abs(rust_loss - analytical_loss) / analytical_loss * 100
+            if diff_pct > 50:
+                _log.warning("  *** DISCREPANCY: Rust vs analytical differ by %.0f%%! ***", diff_pct)
+            else:
+                _log.info("  Agreement: within %.0f%%", diff_pct)
+        elif rust_loss > 0:
+            _log.warning("  *** DISCREPANCY: Analytical says 0 loss but Rust says %.0f! ***", rust_loss)
+        else:
+            _log.info("  Agreement: both predict ~0 loss")
+    except Exception as e:
+        _log.warning("  Rust verify: FAILED - %s", str(e)[:100])
+
+
+
 def optimize(
     enemy_fleet: Dict[str, int],
     enemy_defenses: Optional[Dict[str, int]] = None,
@@ -416,6 +476,14 @@ def optimize(
     t2 = time.time()
     _log.info("Phase B done in %.2fs: best_loss=%.0f", t2 - t1, global_best_loss)
 
+    # Rust per-unit verification of the GA winner (logging only)
+    _log.info("--- Rust per-unit verification (GA winner) ---")
+    _rust_verify(
+        global_best_fleet, enemy_fleet, enemy_defenses,
+        attacker_tech, enemy_tech, global_best_loss,
+        n_sims=3, base_seed=base_seed + 88888,
+    )
+
     # Strict budget enforcement: proportional scale if over
     from ogame_optimizer.core.fleet import fleet_value as _fv
     _fleet_val = _fv(ga_result.best_fleet)
@@ -458,6 +526,14 @@ def optimize(
         improvement_pct = (
             (greedy_result.estimated_loss * _loss_scale - mean_loss) / max(greedy_result.estimated_loss * _loss_scale, 1) * 100.0
         )
+
+    # Rust per-unit verification of final fleet (logging only)
+    _log.info("--- Rust per-unit verification (final fleet) ---")
+    _rust_verify(
+        ga_result.best_fleet, enemy_fleet, enemy_defenses,
+        attacker_tech, enemy_tech, mean_loss_raw,
+        n_sims=5, base_seed=base_seed + 99999,
+    )
 
     _log.info("=== OPTIMIZE DONE total=%.2fs greedy=%.2fs ga=%.2fs win_prob=%.3f improvement=%.1f%% ===",
               t3 - t0, t1 - t0, t2 - t1, win_prob, improvement_pct)
