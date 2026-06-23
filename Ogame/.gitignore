@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Rust
+target/
+*.so
+*.pyd
+*.dll
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Maturin artifacts
+.maturin/
+
+# Cargo.lock is intentionally tracked for application crates (not libraries)
+# so that builds are reproducible across machines.
+# Logs
+logs/
+
+# Internal planning state
+.omo/
+
+# Debug symbols
+*.pdb
