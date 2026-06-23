@@ -338,8 +338,10 @@ if (parseBtn) {
   });
 }
 
-  // Default-exclude deathstar on page load
+  // Default-exclude slow/expensive ships on page load
   var dsCb = document.getElementById("exclude_deathstar");
   if (dsCb) dsCb.checked = true;
+  var bmCb = document.getElementById("exclude_bomber");
+  if (bmCb) bmCb.checked = true;
 
 })();
