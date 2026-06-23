@@ -143,7 +143,8 @@
     var netPct = data.net_profit_pct || 0;
     var netClass = netP > 0 ? "win-green" : "win-red";
     var netSign = netP >= 0 ? "+" : "";
-    cards.push(["Net Profit (if recycled)", netSign + fmtNum(netP) + " (" + netSign + netPct.toFixed(1) + "%)", netClass]);
+    var netLabel = netP >= 0 ? "Net Profit (if recycled)" : "NET LOSS (if recycled)";
+    cards.push([netLabel, netSign + fmtNum(netP) + " (" + netSign + netPct.toFixed(1) + "%)", netClass]);
     if (data.recyclers_needed > 0) {
       var rcT = data.recyclers_cost_total || 0;
       var recLabel = fmtNum(data.recyclers_needed) + " (cap " + fmtNum(data.recycler_capacity) + " each)";
