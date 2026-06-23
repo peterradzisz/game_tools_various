@@ -476,14 +476,6 @@ def optimize(
     t2 = time.time()
     _log.info("Phase B done in %.2fs: best_loss=%.0f", t2 - t1, global_best_loss)
 
-    # Rust per-unit verification of the GA winner (logging only)
-    _log.info("--- Rust per-unit verification (GA winner) ---")
-    _rust_verify(
-        global_best_fleet, enemy_fleet, enemy_defenses,
-        attacker_tech, enemy_tech, global_best_loss,
-        n_sims=3, base_seed=base_seed + 88888,
-    )
-
     # Strict budget enforcement: proportional scale if over
     from ogame_optimizer.core.fleet import fleet_value as _fv
     _fleet_val = _fv(ga_result.best_fleet)
@@ -526,14 +518,6 @@ def optimize(
         improvement_pct = (
             (greedy_result.estimated_loss * _loss_scale - mean_loss) / max(greedy_result.estimated_loss * _loss_scale, 1) * 100.0
         )
-
-    # Rust per-unit verification of final fleet (logging only)
-    _log.info("--- Rust per-unit verification (final fleet) ---")
-    _rust_verify(
-        ga_result.best_fleet, enemy_fleet, enemy_defenses,
-        attacker_tech, enemy_tech, mean_loss_raw,
-        n_sims=5, base_seed=base_seed + 99999,
-    )
 
     _log.info("=== OPTIMIZE DONE total=%.2fs greedy=%.2fs ga=%.2fs win_prob=%.3f improvement=%.1f%% ===",
               t3 - t0, t1 - t0, t2 - t1, win_prob, improvement_pct)
