@@ -64,8 +64,8 @@ class OptimizeRequest(BaseModel):
     def validate_multiplier(cls, v: float) -> float:
         if v <= 0:
             raise ValueError("budget_multiplier must be positive")
-        if abs(v / 0.5 - round(v / 0.5)) > 1e-6:
-            raise ValueError(f"budget_multiplier must be a 0.5-step value (0.5, 1.0, 1.5, ...), got {v}")
+        if abs(v / 0.1 - round(v / 0.1)) > 1e-6:
+            raise ValueError(f"budget_multiplier must be a 0.1-step value (0.1, 0.2, ..., 1.0, 1.5, ...), got {v}")
         return v
 
     @field_validator("mode")

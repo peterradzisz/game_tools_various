@@ -6,6 +6,28 @@
   const SHIP_KEYS = ["light_fighter","heavy_fighter","cruiser","battleship","battlecruiser","bomber","destroyer","deathstar","small_cargo","large_cargo","espionage_probe","pathfinder","recycler"];
   const DEFENSE_KEYS = ["rocket_launcher","light_laser","heavy_laser","gauss_cannon","ion_cannon","plasma_turret","small_shield_dome","large_shield_dome"];
 
+  // Ship metadata: speed (base), fuel (deut/hour), shield (base)
+  const SHIP_META = {
+    "light_fighter":   {speed: 12500,  fuel: 20,   shield: 10},
+    "heavy_fighter":   {speed: 10000,  fuel: 75,   shield: 25},
+    "cruiser":         {speed: 15000,  fuel: 300,  shield: 50},
+    "battleship":      {speed: 10000,  fuel: 500,  shield: 200},
+    "battlecruiser":   {speed: 10000,  fuel: 250,  shield: 400},
+    "bomber":          {speed: 4000,   fuel: 1000, shield: 500},
+    "destroyer":       {speed: 5000,   fuel: 1000, shield: 500},
+    "deathstar":       {speed: 100,    fuel: 1,    shield: 50000},
+    "small_cargo":     {speed: 5000,   fuel: 10,   shield: 10},
+    "large_cargo":     {speed: 7500,   fuel: 50,   shield: 25},
+    "espionage_probe": {speed: 100000000, fuel: 1, shield: 0},
+    "pathfinder":      {speed: 10000,  fuel: 50,   shield: 100},
+    "recycler":        {speed: 2000,   fuel: 300,  shield: 10},
+  };
+  function isSlowOrExpensive(key) {
+    var m = SHIP_META[key];
+    if (!m) return false;
+    return m.speed < 6000 || m.fuel >= 500;
+  }
+
   const form = document.getElementById("optimize-form");
   const btn = document.getElementById("optimize-btn");
   const spinner = document.getElementById("spinner");
@@ -191,7 +213,13 @@
       var impactCell = hasAnalysis
         ? "<td class=\"value-col\"" + breakdownText + ">" + (fr.impact_pct != null ? fr.impact_pct.toFixed(1) + "%" : "-") + "</td>"
         : "<td class=\"value-col\">-</td>";
-      row.innerHTML = "<td>" + fr.key.replace(/_/g, " ") + "</td><td>" + fmtNum(fr.count) + "</td>" + impactCell;
+      var shipLabel = fr.key.replace(/_/g, " ");
+      if (isSlowOrExpensive(fr.key)) shipLabel += ' <span style="color:#f87171;font-weight:bold" title="Slow or deuterium-expensive">*</span>';
+      if (hasAnalysis) {
+        var sv = (analysis[fr.key] || {}).survival_pct;
+        if (sv != null && sv >= 95 && fr.count > 1) shipLabel += ' <span style="color:#4ade80" title="High survival rate">&#x26E8;</span>';
+      }
+      row.innerHTML = "<td>" + shipLabel + "</td><td>" + fmtNum(fr.count) + "</td>" + impactCell;
       tbody.appendChild(row);
     }
     if (fleetRows.length === 0) tbody.innerHTML = "<tr><td colspan=3>(empty fleet)</td></tr>";
@@ -302,4 +330,9 @@ if (parseBtn) {
     else { sb.innerHTML = msgs.map(function(m) { return "<div>" + m + "</div>"; }).join(""); sb.classList.add("parse-ok"); }
   });
 }
+
+  // Default-exclude deathstar on page load
+  var dsCb = document.getElementById("exclude_deathstar");
+  if (dsCb) dsCb.checked = true;
+
 })();

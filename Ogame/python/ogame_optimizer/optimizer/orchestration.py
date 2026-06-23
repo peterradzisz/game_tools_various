@@ -480,6 +480,23 @@ def optimize(
         base_seed=base_seed,
     )
 
+    # Compute per-ship survival rates (for shield marker in UI)
+    try:
+        from ogame_optimizer.core.fast_combat import simulate_combat_fast
+        _detail = simulate_combat_fast(
+            ga_result.best_fleet, enemy_fleet, enemy_defenses,
+            attacker_tech, enemy_tech, seed=base_seed + 70000,
+        )
+        _survivors = _detail.get("attacker_survivors", {})
+        for _ship, _count in ga_result.best_fleet.items():
+            if _count > 0:
+                _surv_pct = round((_survivors.get(_ship, 0) / _count) * 100, 1)
+                if _ship not in fleet_analysis:
+                    fleet_analysis[_ship] = {}
+                fleet_analysis[_ship]["survival_pct"] = _surv_pct
+    except Exception:
+        pass
+
     return OptimizationResult(
         recommended_fleet=ga_result.best_fleet,
         fleet_value=_final_fv,

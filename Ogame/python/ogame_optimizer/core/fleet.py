@@ -154,10 +154,10 @@ def fleet_value(
 
 
 def validate_multiplier(multiplier: float) -> None:
-    """Validate that ``multiplier`` is positive and on the 0.5-step grid.
+    """Validate that ``multiplier`` is positive and on the 0.1-step grid.
 
-    Allowed values: ``0.5, 1.0, 1.5, 2.0, 2.5, 3.0, ...``.  Off-grid values
-    like ``0.3, 0.7, 1.25`` are rejected because they would produce a
+    Allowed values: ``0.1, 0.2, ..., 1.0, 1.5, 2.0, ...``.  Off-grid values
+    like ``0.37, 0.55, 1.25`` are rejected because they would produce a
     non-integer-currency budget (e.g. 300,000.00000000003 metal).
 
     Float-precision tolerance accommodates arithmetic like
@@ -171,11 +171,11 @@ def validate_multiplier(multiplier: float) -> None:
         raise ValueError(
             f"multiplier must be positive, got {multiplier}"
         )
-    doubled = float(multiplier) * 2.0
-    if not math.isclose(doubled, round(doubled), abs_tol=_GRID_TOLERANCE):
+    tenth = float(multiplier) * 10.0
+    if not math.isclose(tenth, round(tenth), abs_tol=_GRID_TOLERANCE):
         raise ValueError(
-            f"multiplier {multiplier} is not on the 0.5-step grid "
-            f"(allowed: 0.5, 1.0, 1.5, 2.0, ...)"
+            f"multiplier {multiplier} is not on the 0.1-step grid "
+            f"(allowed: 0.1, 0.2, ..., 1.0, 1.5, ...)"
         )
 
 

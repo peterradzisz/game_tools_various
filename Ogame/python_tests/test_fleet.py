@@ -161,7 +161,7 @@ def test_budget_default_multiplier_is_one() -> None:
 
 
 # ---------------------------------------------------------------------------
-# validate_multiplier() — 0.5-step grid
+# validate_multiplier() — 0.1-step grid
 # ---------------------------------------------------------------------------
 
 
@@ -172,7 +172,7 @@ def test_multiplier_steps_accepts_grid_values() -> None:
 
 
 def test_multiplier_steps_rejects_off_grid_values() -> None:
-    for m in (0.3, 0.7, 1.2, 1.25, 2.1, 3.7):
+    for m in (0.37, 0.55, 1.25, 2.15, 3.77):
         with pytest.raises(ValueError):
             validate_multiplier(m)
 

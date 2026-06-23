@@ -80,7 +80,7 @@ def test_optimize_invalid_multiplier(client):
         "enemy_defenses": {"defenses": {}},
         "attacker_tech": {"weapon": 0, "shield": 0, "armor": 0},
         "defender_tech": {"weapon": 0, "shield": 0, "armor": 0},
-        "budget_multiplier": 0.3,
+        "budget_multiplier": 0.37,
         "mode": "attack",
         "seed": 42,
     })
