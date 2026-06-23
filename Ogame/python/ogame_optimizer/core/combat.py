@@ -193,7 +193,7 @@ def simulate_batch(
     # Fast path for large fleets
     if should_use_fast(attacker, defender, defender_defenses):
         return simulate_batch_fast(attacker, defender, defender_defenses, attacker_tech, defender_tech, int(n_sims), int(base_seed), debris_pct=debris_pct, deuterium_in_debris=deuterium_in_debris)
-    return _translate_result(_rust.simulate_batch_py(
+    result = _translate_result(_rust.simulate_batch_py(
         _normalize_ship_keys(_strip_unknown_for_rust(attacker)),
         _normalize_ship_keys(_strip_unknown_for_rust(defender)),
         _normalize_defense_keys(defender_defenses),
@@ -202,6 +202,37 @@ def simulate_batch(
         int(n_sims),
         int(base_seed),
     ))
+
+    # Add debris: run one detailed sim to get per-type survivors
+    try:
+        detail = _translate_result(_rust.simulate_combat_py(
+            _normalize_ship_keys(_strip_unknown_for_rust(attacker)),
+            _normalize_ship_keys(_strip_unknown_for_rust(defender)),
+            _normalize_defense_keys(defender_defenses),
+            _to_tech_tuple(attacker_tech),
+            _to_tech_tuple(defender_tech),
+            int(base_seed),
+        ))
+        from ogame_optimizer.core.fast_combat import calculate_debris
+        _stripped_a = _strip_unknown_for_rust(attacker)
+        _stripped_d = _strip_unknown_for_rust(defender)
+        _debris = calculate_debris(
+            _stripped_a, detail.get("attacker_survivors", {}),
+            _stripped_d, detail.get("defender_survivors", {}),
+            defender_defenses, detail.get("defender_defense_survivors", {}),
+            debris_pct, deuterium_in_debris,
+        )
+        result["debris_metal"] = _debris["debris_metal"]
+        result["debris_crystal"] = _debris["debris_crystal"]
+        result["debris_deuterium"] = _debris["debris_deuterium"]
+        result["debris_total"] = _debris["debris_total"]
+    except Exception:
+        result["debris_metal"] = 0
+        result["debris_crystal"] = 0
+        result["debris_deuterium"] = 0
+        result["debris_total"] = 0
+
+    return result
 
 
 def evaluate_population(

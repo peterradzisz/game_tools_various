@@ -380,9 +380,11 @@ def simulate_batch_fast(
     """Run N analytical sims and return aggregate stats (same format as Rust batch)."""
     from ogame_optimizer.core.fleet import SHIPS_COST
 
-    # Compute initial fleet values
     atk_value = sum(sum(SHIPS_COST.get(k, (0, 0, 0))) * v for k, v in attacker.items())
+    def_value = sum(sum(SHIPS_COST.get(k, (0, 0, 0))) * v for k, v in defender.items())
     losses = []
+    def_losses = []
+    debris_metal_sum = debris_crystal_sum = debris_deut_sum = 0
     wins = losses_count = draws = 0
 
     for i in range(n_sims):
@@ -398,6 +400,23 @@ def simulate_batch_fast(
         loss = atk_value - surv_value
         losses.append(loss)
 
+        def_surv_value = sum(
+            sum(SHIPS_COST.get(k, (0, 0, 0))) * v
+            for k, v in r.get("defender_survivors", {}).items()
+        )
+        def_losses.append(def_value - def_surv_value)
+
+        # Compute debris per-sim for accurate averaging
+        db = calculate_debris(
+            attacker, r.get("attacker_survivors", {}),
+            defender, r.get("defender_survivors", {}),
+            defender_defenses, r.get("defender_defense_survivors", {}),
+            debris_pct, deuterium_in_debris,
+        )
+        debris_metal_sum += db["debris_metal"]
+        debris_crystal_sum += db["debris_crystal"]
+        debris_deut_sum += db["debris_deuterium"]
+
         if r["winner"] == "Attacker":
             wins += 1
         elif r["winner"] == "Defender":
@@ -408,34 +427,22 @@ def simulate_batch_fast(
     mean_loss = sum(losses) / n_sims if n_sims > 0 else 0
     variance = sum((l - mean_loss) ** 2 for l in losses) / n_sims if n_sims > 0 else 0
     stddev = math.sqrt(variance)
-
-    # Calculate debris from the last simulation
-    last_result = simulate_combat_fast(
-        attacker, defender, defender_defenses,
-        attacker_tech, defender_tech,
-        seed=base_seed + n_sims,
-    )
-    debris = calculate_debris(
-        attacker, last_result.get("attacker_survivors", {}),
-        defender, last_result.get("defender_survivors", {}),
-        defender_defenses, last_result.get("defender_defense_survivors", {}),
-        debris_pct, deuterium_in_debris,
-    )
+    mean_def_loss = sum(def_losses) / n_sims if n_sims > 0 else 0
 
     return {
         "mean_attacker_loss": mean_loss,
         "stddev_attacker_loss": stddev,
-        "mean_defender_loss": 0,
+        "mean_defender_loss": mean_def_loss,
         "win_probability": wins / n_sims if n_sims > 0 else 0,
         "wins": wins,
         "losses": losses_count,
         "draws": draws,
         "sims_run": n_sims,
         "seed_used": base_seed,
-        "debris_metal": debris["debris_metal"],
-        "debris_crystal": debris["debris_crystal"],
-        "debris_deuterium": debris["debris_deuterium"],
-        "debris_total": debris["debris_total"],
+        "debris_metal": int(debris_metal_sum / n_sims) if n_sims > 0 else 0,
+        "debris_crystal": int(debris_crystal_sum / n_sims) if n_sims > 0 else 0,
+        "debris_deuterium": int(debris_deut_sum / n_sims) if n_sims > 0 else 0,
+        "debris_total": int((debris_metal_sum + debris_crystal_sum + debris_deut_sum) / n_sims) if n_sims > 0 else 0,
     }
 
 
